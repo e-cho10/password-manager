@@ -1,0 +1,12 @@
+5-30-21
+User logs into password manager with master password
+User is presented list of options:
+1. Get password currently in database
+2. Store new password in database
+3. Change password currently in database
+4. Change master password
+
+Things to do:
+Implement password encryption/decryption
+
+cursor.execute("INSERT INTO table VALUES (?, ?, ?)", (var1, var2, var3))
