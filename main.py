@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 from os.path import exists
 import sqlite3
+import getpass
 
 def generate_key():
     """
@@ -17,6 +18,10 @@ def load_key():
     return open("pass.key", "rb").read()
 
 def init_database():
+    """
+    Executed when passwords.db does not exist
+    Creates new table and populates it with master password
+    """
     con = sqlite3.connect('passwords.db')
     cur = con.cursor()
     cur.execute('''CREATE TABLE passwords
@@ -35,6 +40,9 @@ def init_database():
             print("Passwords do not match.")
 
 def check_for_app(app):
+    """
+    Helper method to locate row in database
+    """
     if (app == "all"):
         return -1
     count = 0
@@ -140,6 +148,9 @@ def save_and_exit():
     quit()
 
 def get_intent(a):
+    """
+    Method called to check user's intent
+    """
     intent_dict = {
         1: lookup_pwd,
         2: store_pwd,
@@ -151,7 +162,7 @@ def get_intent(a):
 
 def main():
     print("PASSWORD MANAGER\n")
-    master = input("Enter master password: ")
+    master = getpass.getpass(prompt="Master password: ")
     cur.execute("SELECT pwd FROM passwords WHERE master=1")
     if (master != cur.fetchone()[0]):
         print("Incorrect master password. Exiting Password Manager...")
